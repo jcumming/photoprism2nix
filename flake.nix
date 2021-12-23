@@ -1,14 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
-    ranz2nix = { url = "github:andir/ranz2nix"; flake = false; };
+    npmlock2nix-src = { url = "github:nix-community/npmlock2nix"; flake = false; };
     photoprism = { url = "github:photoprism/photoprism"; flake = false; };
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     flake-utils.url = "github:numtide/flake-utils";
     gomod2nix = { url = "github:tweag/gomod2nix"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
 
-  outputs = inputs@{ self, nixpkgs, ranz2nix, photoprism, flake-utils, gomod2nix, flake-compat }:
+  outputs = inputs@{ self, nixpkgs, npmlock2nix-src, photoprism, flake-utils, gomod2nix, flake-compat }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "i686-linux" ]
       (
         system:
@@ -267,49 +267,22 @@
 
               passthru = rec {
 
-                frontend =
-                  let
-                    noderanz = callPackage ranz2nix {
-                      nodejs = nodejs-14_x;
-                      sourcePath = src + "/frontend";
-                      packageOverride = name: spec:
-                        if name == "minimist" && spec ? resolved && spec.resolved == "" && spec.version == "1.2.0" then {
-                          resolved = "file://" + (
-                            toString (
-                              fetchurl {
-                                url = "https://registry.npmjs.org/minimist/-/minimist-1.2.0.tgz";
-                                sha256 = "0w7jll4vlqphxgk9qjbdjh3ni18lkrlfaqgsm7p14xl3f7ghn3gc";
-                              }
-                            )
-                          );
-                        } else { };
-                    };
-                    node_modules = noderanz.patchedBuild;
-                  in
-                  stdenv.mkDerivation {
-                    name = "photoprism-frontend";
-                    nativeBuildInputs = [ nodejs-14_x ];
+                frontend = (callPackage npmlock2nix {}).build {
+                  name = "photoprism-frontend";
+		  src = src + "/frontend";
+                  nodejs = nodejs-14_x;
 
-                    inherit src;
+                  postUnpack = ''
+                    chmod -R +rw .
+                  '';
 
-                    sourceRoot = "source/frontend";
+                  NODE_ENV = "production";
 
-                    postUnpack = ''
-                      chmod -R +rw .
-                    '';
-
-                    NODE_ENV = "production";
-
-                    buildPhase = ''
-                      export HOME=$(mktemp -d)
-                      ln -sf ${node_modules}/node_modules node_modules
-                      ln -sf ${node_modules.lockFile} package-lock.json
-                      npm run build
-                    '';
-                    installPhase = ''
-                      cp -rv ../assets/static/build $out
-                    '';
-                  };
+                  buildCommands = [ "npm run build" ];
+                  installPhase = ''
+                    cp -rv ../assets/static/build $out
+                  '';
+                };
 
                 assets =
                   let

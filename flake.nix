@@ -70,17 +70,11 @@
                 default = "127.0.0.1";
               };
 
-              keyFile = mkOption {
-                type = types.bool;
-                default = false;
+              adminPasswordFile = mkOption {
+                type = types.path;
                 description = ''
-                  for sops path
-                   sops.secrets.photoprism-password = {
-                     owner = "photoprism";
-                     sopsFile = ../../secrets/secrets.yaml;
-                     path = "/var/lib/photoprism/keyFile";
-                   };
-                   #PHOTOPRISM_ADMIN_PASSWORD=<yourpassword>
+                  path to file containing
+                  PHOTOPRISM_ADMIN_PASSWORD=<password>
                 '';
               };
 
@@ -162,7 +156,6 @@
                 CacheDirectory = "photoprism";
                 StateDirectory = "photoprism";
                 SyslogIdentifier = "photoprism";
-                #Sops secrets PHOTOPRISM_ADMIN_PASSWORD= /****/
                 PrivateTmp = true;
                 PrivateUsers = true;
                 PrivateDevices = true;
@@ -181,7 +174,7 @@
                 RestrictRealtime = true;
                 SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
                 SystemCallErrorNumber = "EPERM";
-                EnvironmentFile = mkIf cfg.keyFile "${cfg.dataDir}/keyFile";
+                EnvironmentFile = mkIf cfg.adminPasswordFile cfg.adminPasswordFile;
               };
 
               environment = (

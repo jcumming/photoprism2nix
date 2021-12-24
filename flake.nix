@@ -1,14 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
-    npmlock2nix-src = { url = "github:nix-community/npmlock2nix"; flake = false; };
+    npmlock2nix = { url = "github:nix-community/npmlock2nix"; flake = false; };
     photoprism = { url = "github:photoprism/photoprism"; flake = false; };
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     flake-utils.url = "github:numtide/flake-utils";
     gomod2nix = { url = "github:tweag/gomod2nix"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
 
-  outputs = inputs@{ self, nixpkgs, npmlock2nix-src, photoprism, flake-utils, gomod2nix, flake-compat }:
+  outputs = inputs@{ self, nixpkgs, npmlock2nix, photoprism, flake-utils, gomod2nix, flake-compat }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "i686-linux" ]
       (
         system:
@@ -50,10 +50,7 @@
         {
           options = with lib; {
             services.photoprism = {
-              enable = mkOption {
-                type = types.bool;
-                default = false;
-              };
+              enable = mkEnableOption "photoprism personal photo management";
 
               mysql = mkOption {
                 type = types.bool;
@@ -61,7 +58,7 @@
               };
 
               port = mkOption {
-                type = types.int;
+                type = types.port;
                 default = 2342;
               };
 
@@ -174,7 +171,7 @@
                 RestrictRealtime = true;
                 SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
                 SystemCallErrorNumber = "EPERM";
-                EnvironmentFile = mkIf cfg.adminPasswordFile cfg.adminPasswordFile;
+                EnvironmentFile = cfg.adminPasswordFile;
               };
 
               environment = (
@@ -190,7 +187,7 @@
                       if !cfg.mysql then "${cfg.dataDir}/photoprism.sqlite"
                       else
                         "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
-                    DEBUG = "true";
+                    #DEBUG = "true";
                     DETECT_NSFW = "true";
                     EXPERIMENTAL = "true";
                     WORKERS = "8";
@@ -202,7 +199,7 @@
                     JPEG_SIZE = "7680";
                     PUBLIC = "false";
                     READONLY = "false";
-                    TENSORFLOW_OFF = "true";
+                    #TENSORFLOW_OFF = "true";
                     SIDECAR_JSON = "true";
                     SIDECAR_YAML = "true";
                     SIDECAR_PATH = "${cfg.dataDir}/sidecar";
@@ -219,7 +216,7 @@
                     THUMB_SIZE_UNCACHED = "7680";
                     THUMB_UNCACHED = "true";
                     UPLOAD_NSFW = "true";
-                  } // (if !cfg.keyFile then { ADMIN_PASSWORD = "photoprism"; } else { })
+                  }
               );
             };
           };
@@ -309,5 +306,14 @@
             }
           );
       };
+
+      checks.x86_64-linux.integration = let
+        pkgs = import nixpkgs
+          {
+            system = "x86_64-linux";
+	    overlays = [ self.overlay ];
+          };
+	in
+      pkgs.nixosTest (import ./integration-test.nix { photoprismModule = self.nixosModules.photoprism; });
     };
 }

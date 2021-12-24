@@ -68,7 +68,7 @@
         "type": "github"
       }
     },
-    "npmlock2nix-src": {
+    "npmlock2nix": {
       "flake": false,
       "locked": {
         "lastModified": 1636969172,
@@ -106,7 +106,7 @@
         "flake-utils": "flake-utils",
         "gomod2nix": "gomod2nix",
         "nixpkgs": "nixpkgs",
-        "npmlock2nix-src": "npmlock2nix-src",
+        "npmlock2nix": "npmlock2nix",
         "photoprism": "photoprism"
       }
     },

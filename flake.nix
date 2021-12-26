@@ -83,7 +83,7 @@
                 '';
               };
 
-	      settings = mkOption {
+	      settings = mkOption rec {
 	        apply = recursiveUpdate default;
 	        default = {
                   SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";

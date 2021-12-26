@@ -86,44 +86,28 @@
 	      settings = mkOption {
 	        apply = recursiveUpdate default;
 	        default = {
-                  #HOME = "${cfg.dataDir}";
                   SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
-
-                  DARKTABLE_PRESETS = "false";
 
                   DATABASE_DRIVER = if !cfg.mysql then "sqlite" else "mysql";
                   DATABASE_DSN =
                     if !cfg.mysql then "${cfg.dataDir}/photoprism.sqlite"
                     else
                       "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
-                  #DEBUG = "true";
                   DETECT_NSFW = "true";
-                  EXPERIMENTAL = "true";
-                  WORKERS = "8";
                   ORIGINALS_LIMIT = "1000000";
                   HTTP_HOST = "${cfg.host}";
                   HTTP_PORT = "${toString cfg.port}";
                   HTTP_MODE = "release";
-                  JPEG_QUALITY = "92";
-                  JPEG_SIZE = "7680";
                   PUBLIC = "false";
                   READONLY = "false";
-                  #TENSORFLOW_OFF = "true";
                   SIDECAR_JSON = "true";
                   SIDECAR_YAML = "true";
                   SIDECAR_PATH = "${cfg.dataDir}/sidecar";
-                  SETTINGS_HIDDEN = "false";
-                  SITE_CAPTION = "Browse Your Life";
-                  SITE_TITLE = "PhotoPrism";
-                  SITE_URL = "http://127.0.0.1:2342/";
+                  SITE_URL = "http://${cfg.host}:${toString cfg.port}";
                   STORAGE_PATH = "${cfg.dataDir}/storage";
                   ASSETS_PATH = "${cfg.package.assets}";
                   ORIGINALS_PATH = "${cfg.dataDir}/originals";
                   IMPORT_PATH = "${cfg.dataDir}/import";
-                  THUMB_FILTER = "linear";
-                  THUMB_SIZE = "2048";
-                  THUMB_SIZE_UNCACHED = "7680";
-                  THUMB_UNCACHED = "true";
                   UPLOAD_NSFW = "true";
                 };
 		example = {

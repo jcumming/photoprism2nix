@@ -164,7 +164,7 @@
               script =
                 ''
                   export PHOTOPRISM_ADMIN_PASSWORD=$(cat ${cfg.adminPasswordFile})
-                  export PHOTOPRISM_DATABASE_PASSWORD=$(cat ${cfg.databasePasswordFile})
+                  ${optionalString cfg.mysql "export PHOTOPRISM_DATABASE_PASSWORD=$(cat ${cfg.databasePasswordFile})"}
                   ${cfg.package}/bin/photoprism --config-file ${settingsFormat.generate "config.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
                 '';
 
@@ -209,12 +209,7 @@
         photoprism = with final;
           (
             let
-              src = pkgs.fetchFromGitHub {
-                owner = "photoprism";
-                repo = "photoprism";
-                rev = photoprism.rev;
-                sha256 = photoprism.narHash;
-              };
+              src = photoprism;
             in
             buildGoApplication {
               name = "photoprism";

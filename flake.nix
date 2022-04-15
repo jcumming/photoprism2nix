@@ -83,9 +83,9 @@
                 '';
               };
 
-	      settings = mkOption rec {
-	        apply = recursiveUpdate default;
-	        default = {
+              settings = mkOption rec {
+                apply = recursiveUpdate default;
+                default = {
                   SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
 
                   DATABASE_DRIVER = if !cfg.mysql then "sqlite" else "mysql";
@@ -110,14 +110,14 @@
                   IMPORT_PATH = "${cfg.dataDir}/import";
                   UPLOAD_NSFW = "true";
                 };
-		example = {
-		  SITE_URL = "http://example.com";
-		  THUMB_SIZE = 1024;
-		};
-	        description = ''
-		  settings as described on <link xlink:href="https://docs.photoprism.app/getting-started/config-options/"/> without the PHOTOPRISM_ prefix
-		'';
-	      };
+                example = {
+                  SITE_URL = "http://example.com";
+                  THUMB_SIZE = 1024;
+                };
+                description = ''
+                  settings as described on <link xlink:href="https://docs.photoprism.app/getting-started/config-options/"/> without the PHOTOPRISM_ prefix
+                '';
+              };
 
               package = mkOption {
                 type = types.package;
@@ -257,9 +257,9 @@
 
               passthru = rec {
 
-                frontend = (callPackage npmlock2nix {}).build {
+                frontend = (callPackage npmlock2nix { }).build {
                   name = "photoprism-frontend";
-		  src = src + "/frontend";
+                  src = src + "/frontend";
                   nodejs = nodejs-14_x;
 
                   postUnpack = ''
@@ -300,13 +300,14 @@
           );
       };
 
-      checks.x86_64-linux.integration = let
-        pkgs = import nixpkgs
-          {
-            system = "x86_64-linux";
-	    overlays = [ self.overlay ];
-          };
-	in
-      pkgs.nixosTest (import ./integration-test.nix { photoprismModule = self.nixosModules.photoprism; });
+      checks.x86_64-linux.integration =
+        let
+          pkgs = import nixpkgs
+            {
+              system = "x86_64-linux";
+              overlays = [ self.overlay ];
+            };
+        in
+        pkgs.nixosTest (import ./integration-test.nix { photoprismModule = self.nixosModules.photoprism; });
     };
 }

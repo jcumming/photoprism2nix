@@ -15,10 +15,11 @@
         let
           pkgs = import nixpkgs
             {
-              inherit system; overlays = [
-              self.overlay
-              gomod2nix.overlay
-            ];
+              inherit system;
+              overlays = [
+                self.overlay
+                gomod2nix.overlay
+              ];
               config = {
                 allowUnsupportedSystem = true;
               };
@@ -46,6 +47,7 @@
       nixosModules.photoprism = { lib, pkgs, config, ... }:
         let
           cfg = config.services.photoprism;
+          settingsFormat = pkgs.formats.yaml { };
         in
         {
           options = with lib; {
@@ -69,53 +71,21 @@
 
               adminPasswordFile = mkOption {
                 type = types.path;
-                description = ''
-                  path to file containing
-                  PHOTOPRISM_ADMIN_PASSWORD=<password>
-                '';
+              };
+
+              databasePasswordFile = mkOption {
+                type = types.path;
               };
 
               dataDir = mkOption {
                 type = types.path;
                 default = "/var/lib/photoprism";
-                description = ''
-                  Data directory for photoprism
-                '';
               };
 
-              settings = mkOption rec {
-                apply = recursiveUpdate default;
-                default = {
-                  SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
-
-                  DATABASE_DRIVER = if !cfg.mysql then "sqlite" else "mysql";
-                  DATABASE_DSN =
-                    if !cfg.mysql then "${cfg.dataDir}/photoprism.sqlite"
-                    else
-                      "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
-                  DETECT_NSFW = "true";
-                  ORIGINALS_LIMIT = "1000000";
-                  HTTP_HOST = "${cfg.host}";
-                  HTTP_PORT = "${toString cfg.port}";
-                  HTTP_MODE = "release";
-                  PUBLIC = "false";
-                  READONLY = "false";
-                  SIDECAR_JSON = "true";
-                  SIDECAR_YAML = "true";
-                  SIDECAR_PATH = "${cfg.dataDir}/sidecar";
-                  SITE_URL = "http://${cfg.host}:${toString cfg.port}";
-                  STORAGE_PATH = "${cfg.dataDir}/storage";
-                  ASSETS_PATH = "${cfg.package.assets}";
-                  ORIGINALS_PATH = "${cfg.dataDir}/originals";
-                  IMPORT_PATH = "${cfg.dataDir}/import";
-                  UPLOAD_NSFW = "true";
-                };
-                example = {
-                  SITE_URL = "http://example.com";
-                  THUMB_SIZE = 1024;
-                };
+              settings = mkOption {
+                type = settingsFormat.type;
                 description = ''
-                  settings as described on <link xlink:href="https://docs.photoprism.app/getting-started/config-options/"/> without the PHOTOPRISM_ prefix
+                  Settings for Photoprism. See <link xlink:href="https://docs.photoprism.app/getting-started/config-options/" /> for available options.
                 '';
               };
 
@@ -128,6 +98,28 @@
           };
 
           config = with lib; mkIf cfg.enable {
+            services.photoprism.settings = {
+              DatabaseDriver = if cfg.mysql then "mysql" else "sqlite";
+              DatabaseDSN =
+                if cfg.mysql
+                then
+                  "${cfg.dataDir}/photoprism.sqlite"
+                else
+                  "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
+              HttpHost = cfg.host;
+              HttpPort = cfg.port;
+              HttpMode = "release";
+              AssetsPath = cfg.package.assets;
+              Public = mkDefault false;
+              Readonly = mkDefault false;
+              SiteUrl = mkDefault "http://${cfg.host}:${toString cfg.port}";
+              SidecarPath = mkDefault "${cfg.dataDir}/sidecar";
+              StoragePath = mkDefault "${cfg.dataDir}/storage";
+              OriginalsPath = mkDefault "${cfg.dataDir}/originals";
+              ImportPath = mkDefault "${cfg.dataDir}/import";
+              UploadNsfw = mkDefault true;
+            };
+
             users.users.photoprism = { isSystemUser = true; group = "photoprism"; };
 
             users.groups.photoprism = { };
@@ -146,10 +138,7 @@
               enable = true;
               after = [
                 "network-online.target"
-                (if cfg.mysql then
-                  "mysql.service"
-                else "")
-              ];
+              ] ++ optional cfg.mysql "mysql.service";
               wantedBy = [ "multi-user.target" ];
 
               confinement = {
@@ -174,7 +163,9 @@
 
               script =
                 ''
-                  exec ${cfg.package}/bin/photoprism --assets-path ${cfg.package.assets} start
+                  export PHOTOPRISM_ADMIN_PASSWORD=$(cat ${cfg.adminPasswordFile})
+                  export PHOTOPRISM_DATABASE_PASSWORD=$(cat ${cfg.databasePasswordFile})
+                  ${cfg.package}/bin/photoprism --config-file ${settingsFormat.generate "config.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
                 '';
 
               serviceConfig = {
@@ -207,7 +198,6 @@
                 RestrictRealtime = true;
                 SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
                 SystemCallErrorNumber = "EPERM";
-                EnvironmentFile = cfg.adminPasswordFile;
               };
 
               environment = lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v)) cfg.settings;

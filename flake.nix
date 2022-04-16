@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/master";
     npmlock2nix = { url = "github:nix-community/npmlock2nix"; flake = false; };
     photoprism = { url = "github:photoprism/photoprism"; flake = false; };
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
@@ -206,6 +206,7 @@
         };
 
       overlay = final: prev: {
+        go = prev.go_1_18;
         photoprism = with final;
           (
             let
@@ -237,7 +238,7 @@
 
               prePatch = ''
                 substituteInPlace internal/commands/passwd.go --replace '/bin/stty' "${coreutils}/bin/stty"
-                sed -i 's/zip.Deflate/zip.Store/g' internal/api/zip.go
+                sed -i 's/zip.Deflate/zip.Store/g' internal/api/download_zip.go
               '';
 
               passthru = rec {

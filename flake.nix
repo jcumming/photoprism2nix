@@ -166,7 +166,6 @@
                 User = "photoprism";
                 BindPaths = [
                   cfg.dataDir
-                  cfg.adminPasswordFile
                 ] ++ lib.optionals cfg.mysql [
                   "-/run/mysqld"
                   "-/var/run/mysqld"

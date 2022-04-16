@@ -166,7 +166,7 @@
               serviceConfig = {
                 User = "photoprism";
                 BindPaths = [
-                  "/var/lib/photoprism"
+                  cfg.dataDir
                 ] ++ lib.optionals cfg.mysql [
                   "-/run/mysqld"
                   "-/var/run/mysqld"
@@ -194,8 +194,6 @@
                 SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
                 SystemCallErrorNumber = "EPERM";
               };
-
-              environment = lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v)) cfg.settings;
             };
           };
         };

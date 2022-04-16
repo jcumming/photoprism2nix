@@ -160,7 +160,7 @@
               script =
                 ''
                   export PHOTOPRISM_ADMIN_PASSWORD=$(cat ${cfg.adminPasswordFile})
-                  ${cfg.package}/bin/photoprism --config-file ${settingsFormat.generate "config.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
+                  ${cfg.package}/bin/photoprism --defaults-yaml ${settingsFormat.generate "defaults.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
                 '';
 
               serviceConfig = {

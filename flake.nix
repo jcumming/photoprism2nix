@@ -159,8 +159,7 @@
 
               script =
                 ''
-                  export PHOTOPRISM_ADMIN_PASSWORD=$(cat ${cfg.adminPasswordFile})
-                  ${cfg.package}/bin/photoprism --defaults-yaml ${settingsFormat.generate "defaults.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
+                  PHOTOPRISM_ADMIN_PASSWORD=$(cat $CREDENTIALS_DIRECTORY/admin_password) ${cfg.package}/bin/photoprism --defaults-yaml ${settingsFormat.generate "defaults.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
                 '';
 
               serviceConfig = {
@@ -172,6 +171,7 @@
                   "-/run/mysqld"
                   "-/var/run/mysqld"
                 ];
+                LoadCredential = [ "admin_password:${cfg.adminPasswordFile}" ];
                 RuntimeDirectory = "photoprism";
                 CacheDirectory = "photoprism";
                 StateDirectory = "photoprism";

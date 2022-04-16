@@ -73,10 +73,6 @@
                 type = types.path;
               };
 
-              databasePasswordFile = mkOption {
-                type = types.path;
-              };
-
               dataDir = mkOption {
                 type = types.path;
                 default = "/var/lib/photoprism";
@@ -164,7 +160,6 @@
               script =
                 ''
                   export PHOTOPRISM_ADMIN_PASSWORD=$(cat ${cfg.adminPasswordFile})
-                  ${optionalString cfg.mysql "export PHOTOPRISM_DATABASE_PASSWORD=$(cat ${cfg.databasePasswordFile})"}
                   ${cfg.package}/bin/photoprism --config-file ${settingsFormat.generate "config.yaml" cfg.settings} --assets-path ${cfg.package.assets} start
                 '';
 

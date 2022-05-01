@@ -219,11 +219,12 @@
 
               buildInputs = [
                 #https://github.com/andir/infra/blob/master/nix/packages/photoprism/default.nix
-                (libtensorflow-bin.overrideAttrs (oA: {
+                (libtensorflow-bin.overrideAttrs (oA: rec {
                   # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
                   # https://github.com/photoprism/photoprism/issues/222
+                  version = "1.15.0";
                   src = fetchurl {
-                    url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz";
+                    url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-${version}.tar.gz";
                     sha256 = "sha256-3sv9WnCeztNSP1XM+iOTN6h+GrPgAO/aNhfbeeEDTe0=";
                   };
                 }))

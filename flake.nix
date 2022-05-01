@@ -182,7 +182,7 @@
                 ProtectKernelLogs = true;
                 SystemCallArchitectures = "native";
                 RestrictNamespaces = true;
-                MemoryDenyWriteExecute = true;
+                MemoryDenyWriteExecute = false;
                 RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
                 RestrictSUIDSGID = true;
                 NoNewPrivileges = true;

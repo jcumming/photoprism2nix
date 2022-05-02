@@ -222,10 +222,10 @@
                 (libtensorflow-bin.overrideAttrs (oA: rec {
                   # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
                   # https://github.com/photoprism/photoprism/issues/222
-                  version = amd64-avx2-1.15.2";
+                  version = "1.15.0";
                   src = fetchurl {
-                    url = "https://dl.photoprism.org/tensorflow/amd64/libtensorflow-${version}.tar.gz"
-                    sha256 = "0d0apgrd3sk7wk95h4p36mnzx36vgb929vxwik4b1zqkm2x79vnf";
+                    url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-${version}.tar.gz";
+                    sha256 = "sha256-3sv9WnCeztNSP1XM+iOTN6h+GrPgAO/aNhfbeeEDTe0=";
                   };
                 }))
               ];

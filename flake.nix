@@ -222,10 +222,10 @@
                 (libtensorflow-bin.overrideAttrs (oA: rec {
                   # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
                   # https://github.com/photoprism/photoprism/issues/222
-                  version = "1.15.0";
+                  version = amd64-avx2-1.15.2";
                   src = fetchurl {
-                    url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-${version}.tar.gz";
-                    sha256 = "sha256-3sv9WnCeztNSP1XM+iOTN6h+GrPgAO/aNhfbeeEDTe0=";
+                    url = "https://dl.photoprism.org/tensorflow/amd64/libtensorflow-${version}.tar.gz"
+                    sha256 = "0d0apgrd3sk7wk95h4p36mnzx36vgb929vxwik4b1zqkm2x79vnf";
                   };
                 }))
               ];
@@ -266,6 +266,11 @@
                       sha256 = "0j0r39cgrr0zf2sc1hpr8jh19lr3jxdw9wz6sq3s7kkqay324ab8";
                     };
 
+                    facenet = fetchzip {
+                      url = "https://dl.photoprism.org/tensorflow/facenet.zip";
+                      sha256 = "1bvhnvw337sk9x60wk2n5jxabpdrs9i22217vg1kmi9abnaf16mz";
+                    };
+
                   in
                   runCommand "photoprims-assets" { } ''
                     cp -rv ${src}/assets $out
@@ -274,6 +279,7 @@
                     cp -rv ${frontend} $out/static/build
                     ln -s ${nsfw} $out/nsfw
                     ln -s ${nasnet} $out/nasnet
+                    ln -s ${facenet} $out/facenet
                   '';
               };
             }

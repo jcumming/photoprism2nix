@@ -268,7 +268,7 @@
 
                     facenet = fetchzip {
                       url = "https://dl.photoprism.org/tensorflow/facenet.zip";
-                      sha256 = "1bvhnvw337sk9x60wk2n5jxabpdrs9i22217vg1kmi9abnaf16mz";
+                      sha256 = "0vyfy7hidlzibm59236ipaymj0mzclnriv9bi86dab1sa627cqpd";
                     };
 
                   in

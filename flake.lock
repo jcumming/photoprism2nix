@@ -18,11 +18,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1649676176,
-        "narHash": "sha256-OWKJratjt2RW151VUlJPRALb7OU2S5s+f0vLj4o1bHM=",
+        "lastModified": 1652557277,
+        "narHash": "sha256-jSes9DaIVMdmwBB78KkFUVrlDzawmD62vrUg0GS2500=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "a4b154ebbdc88c8498a5c7b01589addc9e9cb678",
+        "rev": "12806d31a381e7cd169a6bac35590e7b36dc5fe5",
         "type": "github"
       },
       "original": {
@@ -54,16 +54,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1651467847,
-        "narHash": "sha256-sszq3khLmRlTBezrZRWno2yprRyAAUzHapZrXlpK4Fs=",
-        "owner": "nixos",
+        "lastModified": 1652498892,
+        "narHash": "sha256-idIvU8jo962BBvOeTZd/oit2vpfOk2b9t8+upAd2bwQ=",
+        "owner": "jcumming",
         "repo": "nixpkgs",
-        "rev": "df4411302893a37e8e23504fcfa8d237827af1c7",
+        "rev": "2537f4351f3df6337e1319ed35a051df4fcbaf62",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "master",
+        "owner": "jcumming",
+        "ref": "jcumming-local",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -87,11 +87,11 @@
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1651425558,
-        "narHash": "sha256-7ISOsxVazVejwbrHvyQBtF6igluvRaDCXRs2UdPasGg=",
+        "lastModified": 1652217710,
+        "narHash": "sha256-5p5GpZKKegyxjGX788t+yBzjFOGCtpvQgCgkD9QOI14=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "a62f49e82481b19d4ab6d7075be97143a23c8aa6",
+        "rev": "16c30fffdf132b837ad443d2241439f695174c0d",
         "type": "github"
       },
       "original": {

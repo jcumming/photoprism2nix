@@ -1,10 +1,8 @@
 { photoprismModule }:
 { ... }:
 let photoprismPort = 8080;
-in
-{
-  machine = { config, pkgs, ... }:
-  {
+in {
+  machine = { config, pkgs, ... }: {
     imports = [ photoprismModule ];
     services.photoprism = {
       enable = true;

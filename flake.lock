@@ -18,11 +18,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1652557277,
-        "narHash": "sha256-jSes9DaIVMdmwBB78KkFUVrlDzawmD62vrUg0GS2500=",
+        "lastModified": 1653893745,
+        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "12806d31a381e7cd169a6bac35590e7b36dc5fe5",
+        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
         "type": "github"
       },
       "original": {
@@ -39,26 +39,27 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1641803356,
-        "narHash": "sha256-ZjF43cckJLJCV9I+SXwTGNQGI52KrYwUhLt/R83TyKk=",
+        "lastModified": 1653033293,
+        "narHash": "sha256-Pwt4OMC3x/wlRNViaIUWloYM0G0vN00P6jWXO6Jq51s=",
         "owner": "tweag",
         "repo": "gomod2nix",
-        "rev": "fc5adcc53031c5a3934500a57896a840a2bd073d",
+        "rev": "e54afe9222ca8881d0d525cc16be6c77a2e6f54f",
         "type": "github"
       },
       "original": {
         "owner": "tweag",
         "repo": "gomod2nix",
+        "rev": "e54afe9222ca8881d0d525cc16be6c77a2e6f54f",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1652498892,
-        "narHash": "sha256-idIvU8jo962BBvOeTZd/oit2vpfOk2b9t8+upAd2bwQ=",
+        "lastModified": 1654307732,
+        "narHash": "sha256-xPbXR6Ct0S4+FBAHI46K4XeWV17WaGprBISDfWf+rf4=",
         "owner": "jcumming",
         "repo": "nixpkgs",
-        "rev": "2537f4351f3df6337e1319ed35a051df4fcbaf62",
+        "rev": "c268e81868e79fd40f50efef902a745165f644f7",
         "type": "github"
       },
       "original": {
@@ -87,11 +88,11 @@
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1652217710,
-        "narHash": "sha256-5p5GpZKKegyxjGX788t+yBzjFOGCtpvQgCgkD9QOI14=",
+        "lastModified": 1654373774,
+        "narHash": "sha256-AGvoUtvlvwA50gCg7z5s1XZApMcPYCs8XPAZ/WX3FMg=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "16c30fffdf132b837ad443d2241439f695174c0d",
+        "rev": "928e64e2bdb7a3bff63b45516f4650842d39153d",
         "type": "github"
       },
       "original": {

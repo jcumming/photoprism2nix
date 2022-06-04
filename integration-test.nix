@@ -2,7 +2,7 @@
 { ... }:
 let photoprismPort = 8080;
 in {
-  machine = { config, pkgs, ... }: {
+  nodes.machine = { config, pkgs, ... }: {
     imports = [ photoprismModule ];
     services.photoprism = {
       enable = true;
@@ -12,7 +12,7 @@ in {
   };
 
   testScript = ''
-    machine.wait_for_open_port(${toString photoprismPort})
-    machine.succeed("curl -f http://localhost:${toString photoprismPort}")
+    nodes.machine.wait_for_open_port(${toString photoprismPort})
+    nodes.machine.succeed("curl -f http://localhost:${toString photoprismPort}")
   '';
 }

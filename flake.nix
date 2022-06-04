@@ -15,7 +15,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     gomod2nix = {
-      url = "github:tweag/gomod2nix";
+      url = "github:tweag/gomod2nix/e54afe9222ca8881d0d525cc16be6c77a2e6f54f";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

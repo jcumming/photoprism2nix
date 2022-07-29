@@ -18,11 +18,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1656065134,
-        "narHash": "sha256-oc6E6ByIw3oJaIyc67maaFcnjYOz1mMcOtHxbEf9NwQ=",
+        "lastModified": 1656928814,
+        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "bee6a7250dd1b01844a2de7e02e4df7d8a0a206c",
+        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
         "type": "github"
       },
       "original": {
@@ -54,16 +54,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1656782561,
-        "narHash": "sha256-sZVLNNKIcELllTHqydsckz8HBfVqxeAt51acaaQWLCw=",
-        "owner": "nixos",
+        "lastModified": 1659062253,
+        "narHash": "sha256-ypkzUghemh+2qjPG7XzQLPnS9P1cZzh+Y8x1aTmfmzg=",
+        "owner": "jcumming",
         "repo": "nixpkgs",
-        "rev": "18038cee44aa0c3c99a2319c3c1c4d16d6612d81",
+        "rev": "f5a64410eb12b33c060f4e83c59857bcc151ffb8",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "release-22.05",
+        "owner": "jcumming",
+        "ref": "jcumming-local",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -87,11 +87,11 @@
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1656694475,
-        "narHash": "sha256-1cUlkPwXQcC6FmiXUO74ioI5nFr2rcyQ7DlSimpBCyg=",
+        "lastModified": 1659031285,
+        "narHash": "sha256-4zggwCIPQ3byupSwbpKXufmklkQgKny2ykGmii6KYgM=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "70d86d4d558fd65fc29d589457720969a64a3f24",
+        "rev": "729ddd9206a16f4e47735039f017b8d76fa7a50d",
         "type": "github"
       },
       "original": {

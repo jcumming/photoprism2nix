@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
+    nixpkgs.url = "github:jcumming/nixpkgs?ref=jcumming-local";
     npmlock2nix = {
       url = "github:nix-community/npmlock2nix";
       flake = false;

@@ -260,7 +260,7 @@
                 }
                 // (
                   if !cfg.keyFile
-                  then {ADMIN_PASSWORD = "photoprism";}
+                  then {PHOTOPRISM_ADMIN_PASSWORD = "photoprism";}
                   else {}
                 )
               );

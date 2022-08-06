@@ -39,11 +39,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1655245309,
-        "narHash": "sha256-d/YPoQ/vFn1+GTmSdvbSBSTOai61FONxB4+Lt6w/IVI=",
+        "lastModified": 1659105894,
+        "narHash": "sha256-6+SyORQjTsYGZHWg1TbcpD+4CBi8aBA2rNxmtwu1JtY=",
         "owner": "tweag",
         "repo": "gomod2nix",
-        "rev": "40d32f82fc60d66402eb0972e6e368aeab3faf58",
+        "rev": "d1e95112bd2dc1359330c808154a194c999b7886",
         "type": "github"
       },
       "original": {
@@ -54,11 +54,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1659062253,
-        "narHash": "sha256-ypkzUghemh+2qjPG7XzQLPnS9P1cZzh+Y8x1aTmfmzg=",
+        "lastModified": 1659223413,
+        "narHash": "sha256-tlBD6b6chH5Hke9YdAU1vyAEEenqrPg2fAs9NMfvYP8=",
         "owner": "jcumming",
         "repo": "nixpkgs",
-        "rev": "f5a64410eb12b33c060f4e83c59857bcc151ffb8",
+        "rev": "4106ca1dfff3bc0c7aea18c584ab603448bd8a63",
         "type": "github"
       },
       "original": {
@@ -87,11 +87,11 @@
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1659031285,
-        "narHash": "sha256-4zggwCIPQ3byupSwbpKXufmklkQgKny2ykGmii6KYgM=",
+        "lastModified": 1659425202,
+        "narHash": "sha256-hDX4RM2S/K7R7bsOs+CGz35M94/3bt/U/vI6Blg3wOU=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "729ddd9206a16f4e47735039f017b8d76fa7a50d",
+        "rev": "194e7d1219b8e6b3b1d32ab6ec5400b09fca71a8",
         "type": "github"
       },
       "original": {

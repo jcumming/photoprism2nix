@@ -1,12 +1,12 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:jcumming/nixpkgs/jcumming-local";
     npmlock2nix = {
       url = "github:nix-community/npmlock2nix";
       flake = false;
     };
     photoprism = {
-      url = "github:photoprism/photoprism";
+      url = "github:photoprism/photoprism?ref=5d0a2ccf1bf981e3e91c14464f241cc8a585f857";
       flake = false;
     };
     flake-compat = {

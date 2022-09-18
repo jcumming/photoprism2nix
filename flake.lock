@@ -54,11 +54,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1662872304,
-        "narHash": "sha256-DpGTrW2xpBQ8vBYbSq/JSkXM37kt5grnSIk4LX9Rqmw=",
+        "lastModified": 1663472142,
+        "narHash": "sha256-nuI/NClfdsHI/5LQIXLtQfb5Ibt0aEN3Z2E+4qp3awo=",
         "owner": "jcumming",
         "repo": "nixpkgs",
-        "rev": "1a22a8b7bd0aaedd4c8352ff5ea86aaed4212761",
+        "rev": "61266569373016eaf020d869612017ee215b0ef2",
         "type": "github"
       },
       "original": {

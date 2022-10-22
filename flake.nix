@@ -1,6 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:jcumming/nixpkgs/jcumming-local";
+    nixos.url = "github:jcumming/nixpkgs/jcumming-local";
+    #nixos.url = "github:nixos/nixpkgs/nixos-22.05";
     npmlock2nix = {
       url = "github:nix-community/npmlock2nix";
       flake = false;
@@ -31,6 +33,7 @@
     flake-utils.lib.eachSystem ["x86_64-linux" "x86_64-darwin" "i686-linux"]
     (
       system: let
+        nixos = inputs.nixos.legacyPackages.${system};
         pkgs =
           import nixpkgs
           {
@@ -273,7 +276,7 @@
       overlays.default = final: prev: {
         photoprism = with final; (
           let
-            libtensorflow-bin = prev.libtensorflow-bin.overrideAttrs (old: rec {
+            libtensorflow-bin = inputs.nixos.legacyPackages.${prev.system}.libtensorflow-bin.overrideAttrs (old: rec {
               # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
               # https://github.com/photoprism/photoprism/issues/222
               version = "1.15.0";
@@ -281,6 +284,7 @@
                 url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-${version}.tar.gz";
                 sha256 = "sha256-3sv9WnCeztNSP1XM+iOTN6h+GrPgAO/aNhfbeeEDTe0=";
               };
+              sourceRoot = ".";
             });
           in
             buildGoApplication {
@@ -288,7 +292,7 @@
 
               src = photoprism;
 
-              go = prev.go_1_18;
+              go = prev.go_1_19;
 
               subPackages = ["cmd/photoprism"];
 

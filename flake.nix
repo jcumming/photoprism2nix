@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:jcumming/nixpkgs/jcumming-local";
     nixos.url = "github:jcumming/nixpkgs/jcumming-local";
-    #nixos.url = "github:nixos/nixpkgs/nixos-22.05";
     npmlock2nix = {
       url = "github:nix-community/npmlock2nix";
       flake = false;
@@ -161,7 +160,7 @@
                 enable = true;
                 binSh = null;
                 packages = [
-                  cfg.package.libtensorflow-bin
+                  cfg.package.libtensorflow1-bin
                   pkgs.darktable
                   pkgs.ffmpeg
                   pkgs.exiftool
@@ -171,7 +170,7 @@
               };
 
               path = [
-                cfg.package.libtensorflow-bin
+                cfg.package.libtensorflow1-bin
                 pkgs.darktable
                 pkgs.ffmpeg
                 pkgs.exiftool
@@ -276,16 +275,7 @@
       overlays.default = final: prev: {
         photoprism = with final; (
           let
-            libtensorflow-bin = inputs.nixos.legacyPackages.${prev.system}.libtensorflow-bin.overrideAttrs (old: rec {
-              # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
-              # https://github.com/photoprism/photoprism/issues/222
-              version = "1.15.0";
-              src = fetchurl {
-                url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-${version}.tar.gz";
-                sha256 = "sha256-3sv9WnCeztNSP1XM+iOTN6h+GrPgAO/aNhfbeeEDTe0=";
-              };
-              sourceRoot = ".";
-            });
+            libtensorflow1-bin = final.callPackage ./libtensorflow1-bin.nix { };
           in
             buildGoApplication {
               name = "photoprism";
@@ -302,7 +292,7 @@
               CGO_CFLAGS = "-Wno-return-local-addr";
 
               buildInputs = [
-                libtensorflow-bin
+                libtensorflow1-bin
               ];
 
               prePatch = ''
@@ -310,7 +300,7 @@
               '';
 
               passthru = rec {
-                inherit libtensorflow-bin;
+                inherit libtensorflow1-bin;
 
                 frontend = (callPackage inputs.npmlock2nix {}).build {
                   name = "photoprism-frontend";

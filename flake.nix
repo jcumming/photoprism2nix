@@ -48,7 +48,7 @@
             };
 
             settings = mkOption {
-              type = submodule {
+              type = with types; submodule {
                 freeformType = attrsOf optionType;
               };
               description = lib.mdDoc ''

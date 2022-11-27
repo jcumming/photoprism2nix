@@ -122,7 +122,6 @@
                 enable = true;
                 binSh = null;
                 packages = [
-                  cfg.package.libtensorflow1-bin
                   pkgs.darktable
                   pkgs.ffmpeg
                   pkgs.exiftool
@@ -132,7 +131,6 @@
               };
 
               path = [
-                cfg.package.libtensorflow1-bin
                 pkgs.darktable
                 pkgs.ffmpeg
                 pkgs.exiftool

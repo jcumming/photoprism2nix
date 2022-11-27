@@ -9,12 +9,12 @@
     nixpkgs,
     flake-utils,
   }:
-    flake-utils.lib.eachSystem ["x86_64-linux" ]
+    flake-utils.lib.eachSystem ["x86_64-linux"]
     (
       system: let
         nixos = inputs.nixos.legacyPackages.${system};
         pkgs =
-          import nixpkgs { inherit system; };
+          import nixpkgs {inherit system;};
       in
         with pkgs; rec {
           packages = flake-utils.lib.flattenTree {
@@ -23,6 +23,7 @@
           };
 
           checks.build = packages.photoprism;
+          formatter = pkgs.alejandra;
         }
     )
     // {
@@ -138,7 +139,7 @@
               ];
 
               script = ''
-                exec ${cfg.package}/bin/photoprism --assets-path ${cfg.package.assets} start
+                exec ${cfg.package}/bin/photoprism start
               '';
 
               serviceConfig = {

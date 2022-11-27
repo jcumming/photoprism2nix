@@ -96,6 +96,14 @@
               '';
             };
 
+            adminPassword = mkOption {
+              type = types.string;
+              default = "photoprism";
+              description = ''
+                Password for admin account. Please use "keyfile" instead. This field will be visible to all users who have access to the store!
+              '';
+            };
+
             dataDir = mkOption {
               type = types.path;
               default = "/var/lib/photoprism";
@@ -212,7 +220,8 @@
 
               environment = (
                 lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v))
-                ({
+                (defaultSettings
+                  // {
                     #HOME = "${cfg.dataDir}";
                     SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
 
@@ -231,13 +240,14 @@
                     IMPORT_PATH = "${cfg.dataDir}/import";
                     SIDECAR_PATH = "${cfg.dataDir}/sidecar";
                   }
-                  // defaultSettings
+                  // (
+                    if !cfg.keyFile
+                    then {
+                      ADMIN_PASSWORD = cfg.adminPassword;
+                    }
+                    else {}
+                  )
                   // cfg.settings)
-                // (
-                  if !cfg.keyFile
-                  then {PHOTOPRISM_ADMIN_PASSWORD = "photoprism";}
-                  else {}
-                )
               );
             };
           };

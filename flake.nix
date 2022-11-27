@@ -10,28 +10,28 @@
     flake-utils,
   }: let
     defaultSettings = {
-      DEBUG = true;
-      DETECT_NSFW = true;
-      EXPERIMENTAL = true;
+      DEBUG = "true";
+      DETECT_NSFW = "true";
+      EXPERIMENTAL = "true";
       HTTP_HOST = "127.0.0.1";
       HTTP_MODE = "release";
       HTTP_PORT = 2342;
       JPEG_QUALITY = 92;
       JPEG_SIZE = 7680;
       ORIGINALS_LIMIT = 1000000;
-      PUBLIC = false;
-      READONLY = false;
-      SETTINGS_HIDDEN = false;
-      SIDECAR_JSON = true;
-      SIDECAR_YAML = true;
+      PUBLIC = "false";
+      READONLY = "false";
+      SETTINGS_HIDDEN = "false";
+      SIDECAR_JSON = "true";
+      SIDECAR_YAML = "true";
       SITE_CAPTION = "Browse Your Life";
       SITE_TITLE = "PhotoPrism";
       SITE_URL = "http://127.0.0.1:2342/";
       THUMB_FILTER = "linear";
       THUMB_SIZE = 2048;
       THUMB_SIZE_UNCACHED = 7680;
-      THUMB_UNCACHED = true;
-      UPLOAD_NSFW = true;
+      THUMB_UNCACHED = "true";
+      UPLOAD_NSFW = "true";
       WORKERS = 16;
     };
   in

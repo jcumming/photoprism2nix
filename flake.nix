@@ -8,7 +8,33 @@
     self,
     nixpkgs,
     flake-utils,
-  }:
+  }: let
+    defaultSettings = {
+      DEBUG = true;
+      DETECT_NSFW = true;
+      EXPERIMENTAL = true;
+      HTTP_HOST = "127.0.0.1";
+      HTTP_MODE = "release";
+      HTTP_PORT = 2342;
+      JPEG_QUALITY = 92;
+      JPEG_SIZE = 7680;
+      ORIGINALS_LIMIT = 1000000;
+      PUBLIC = false;
+      READONLY = false;
+      SETTINGS_HIDDEN = false;
+      SIDECAR_JSON = true;
+      SIDECAR_YAML = true;
+      SITE_CAPTION = "Browse Your Life";
+      SITE_TITLE = "PhotoPrism";
+      SITE_URL = "http://127.0.0.1:2342/";
+      THUMB_FILTER = "linear";
+      THUMB_SIZE = 2048;
+      THUMB_SIZE_UNCACHED = 7680;
+      THUMB_UNCACHED = true;
+      UPLOAD_NSFW = true;
+      WORKERS = 16;
+    };
+  in
     flake-utils.lib.eachSystem ["x86_64-linux"]
     (
       system: let
@@ -53,32 +79,7 @@
                 [Environment variable](https://docs.photoprism.app/getting-started/config-options/) set before executing photoprism.
                 The resultant environment variable will have `PHOTOPRISM_` prepended. (i.e. WORKERS = 8 sets PHOTOPRISM_WORKERS = 8).
               '';
-              default = {
-                DEBUG = true;
-                DETECT_NSFW = true;
-                EXPERIMENTAL = true;
-                HTTP_HOST = "127.0.0.1";
-                HTTP_MODE = "release";
-                HTTP_PORT = 2342;
-                JPEG_QUALITY = 92;
-                JPEG_SIZE = 7680;
-                ORIGINALS_LIMIT = 1000000;
-                PUBLIC = false;
-                READONLY = false;
-                SETTINGS_HIDDEN = false;
-                SIDECAR_JSON = true;
-                SIDECAR_PATH = "${cfg.dataDir}/sidecar";
-                SIDECAR_YAML = true;
-                SITE_CAPTION = "Browse Your Life";
-                SITE_TITLE = "PhotoPrism";
-                SITE_URL = "http://127.0.0.1:2342/";
-                THUMB_FILTER = "linear";
-                THUMB_SIZE = 2048;
-                THUMB_SIZE_UNCACHED = 7680;
-                THUMB_UNCACHED = true;
-                UPLOAD_NSFW = true;
-                WORKERS = 16;
-              };
+              default = defaultSettings;
             };
 
             keyFile = mkOption {
@@ -219,7 +220,9 @@
                     STORAGE_PATH = "${cfg.dataDir}/storage";
                     ORIGINALS_PATH = "${cfg.dataDir}/originals";
                     IMPORT_PATH = "${cfg.dataDir}/import";
+                    SIDECAR_PATH = "${cfg.dataDir}/sidecar";
                   }
+                  // defaultSettings
                   // cfg.settings)
                 // (
                   if !cfg.keyFile

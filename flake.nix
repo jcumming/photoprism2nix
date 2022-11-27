@@ -48,9 +48,7 @@
             };
 
             settings = mkOption {
-              type = with types; submodule {
-                freeformType = attrsOf optionType;
-              };
+              type = types.attrs;
               description = lib.mdDoc ''
                 [Environment variable](https://docs.photoprism.app/getting-started/config-options/) set before executing photoprism.
                 The resultant environment variable will have `PHOTOPRISM_` prepended. (i.e. WORKERS = 8 sets PHOTOPRISM_WORKERS = 8).

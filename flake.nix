@@ -1,67 +1,28 @@
 {
   inputs = {
     nixpkgs.url = "github:jcumming/nixpkgs/jcumming-local";
-    nixos.url = "github:jcumming/nixpkgs/jcumming-local";
-    npmlock2nix = {
-      url = "github:nix-community/npmlock2nix";
-      flake = false;
-    };
-    photoprism = {
-      url = "github:photoprism/photoprism?ref=5d0a2ccf1bf981e3e91c14464f241cc8a585f857";
-      flake = false;
-    };
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
     flake-utils.url = "github:numtide/flake-utils";
-    gomod2nix = {
-      url = "github:tweag/gomod2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
-    photoprism,
     flake-utils,
-    gomod2nix,
-    ...
   }:
-    flake-utils.lib.eachSystem ["x86_64-linux" "x86_64-darwin" "i686-linux"]
+    flake-utils.lib.eachSystem ["x86_64-linux" ]
     (
       system: let
         nixos = inputs.nixos.legacyPackages.${system};
         pkgs =
-          import nixpkgs
-          {
-            inherit system;
-            overlays = [
-              self.overlays.default
-              gomod2nix.overlays.default
-            ];
-            config = {
-              allowUnsupportedSystem = true;
-            };
-          };
+          import nixpkgs { inherit system; };
       in
         with pkgs; rec {
           packages = flake-utils.lib.flattenTree {
-            inherit (pkgs)
-              photoprism
-              gomod2nix;
+            inherit (pkgs) photoprism;
             default = pkgs.photoprism;
           };
 
           checks.build = packages.photoprism;
-
-          devShells.default = mkShell {
-            shellHook = ''
-              # ${pkgs.photoprism}/bin/photoprism --admin-password photoprism --import-path ~/Pictures \
-              #  --assets-path ${pkgs.photoprism.assets} start
-            '';
-          };
         }
     )
     // {
@@ -270,81 +231,6 @@
               );
             };
           };
-      };
-
-      overlays.default = final: prev: {
-        photoprism = with final; (
-          let
-            libtensorflow1-bin = final.callPackage ./libtensorflow1-bin.nix { };
-          in
-            buildGoApplication {
-              name = "photoprism";
-
-              src = photoprism;
-
-              go = prev.go_1_19;
-
-              subPackages = ["cmd/photoprism"];
-
-              modules = ./gomod2nix.toml;
-
-              CGO_ENABLED = "1";
-              CGO_CFLAGS = "-Wno-return-local-addr";
-
-              buildInputs = [
-                libtensorflow1-bin
-              ];
-
-              prePatch = ''
-                substituteInPlace internal/commands/passwd.go --replace '/bin/stty' "${coreutils}/bin/stty"
-              '';
-
-              passthru = rec {
-                inherit libtensorflow1-bin;
-
-                frontend = (callPackage inputs.npmlock2nix {}).build {
-                  name = "photoprism-frontend";
-                  src = photoprism + "/frontend";
-                  nodejs = nodejs-14_x;
-
-                  postUnpack = ''
-                    chmod -R +rw .
-                  '';
-
-                  NODE_ENV = "production";
-
-                  buildCommands = ["npm run build"];
-                  installPhase = ''
-                    cp -rv ../assets/static/build $out
-                  '';
-                };
-
-                assets = let
-                  nasnet = fetchzip {
-                    url = "https://dl.photoprism.org/tensorflow/nasnet.zip";
-                    sha256 = "09cnr2wpc09xrv1crms3mfcl61rxf4nr5j51ppy4ng6bxg9rq5s1";
-                  };
-                  facenet = fetchzip {
-                    url = "https://dl.photoprism.org/tensorflow/facenet.zip";
-                    sha256 = "0vyfy7hidlzibm59236ipaymj0mzclnriv9bi86dab1sa627cqpd";
-                  };
-                  nsfw = fetchzip {
-                    url = "https://dl.photoprism.org/tensorflow/nsfw.zip";
-                    sha256 = "0j0r39cgrr0zf2sc1hpr8jh19lr3jxdw9wz6sq3s7kkqay324ab8";
-                  };
-                in
-                  runCommand "photoprims-assets" {} ''
-                    cp -rv ${photoprism}/assets $out
-                    chmod -R +rw $out
-                    rm -rf $out/static/build
-                    cp -rv ${frontend} $out/static/build
-                    ln -s ${nsfw} $out/nsfw
-                    ln -s ${nasnet} $out/nasnet
-                    ln -s ${facenet} $out/facenet
-                  '';
-              };
-            }
-        );
       };
     };
 }

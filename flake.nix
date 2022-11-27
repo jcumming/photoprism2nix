@@ -195,7 +195,7 @@
                   DEBUG = "true";
                   DETECT_NSFW = "true";
                   EXPERIMENTAL = "true";
-                  WORKERS = "8";
+                  WORKERS = "16";
                   ORIGINALS_LIMIT = "1000000";
                   HTTP_HOST = "${cfg.host}";
                   HTTP_PORT = "${toString cfg.port}";
@@ -213,7 +213,6 @@
                   SITE_TITLE = "PhotoPrism";
                   SITE_URL = "http://127.0.0.1:2342/";
                   STORAGE_PATH = "${cfg.dataDir}/storage";
-                  ASSETS_PATH = "${cfg.package.assets}";
                   ORIGINALS_PATH = "${cfg.dataDir}/originals";
                   IMPORT_PATH = "${cfg.dataDir}/import";
                   THUMB_FILTER = "linear";

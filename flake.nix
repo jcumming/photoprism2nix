@@ -104,6 +104,14 @@
               '';
             };
 
+            originalsDir = mkOption {
+              type = types.path;
+              default = "/var/lib/photoprism";
+              description = ''
+                Original Media directory for photoprism
+              '';
+            };
+
             package = mkOption {
               type = types.package;
               default = self.outputs.packages."${pkgs.system}".photoprism;
@@ -170,6 +178,7 @@
                 BindPaths =
                   [
                     cfg.dataDir
+                    cfg.originalsDir
                   ]
                   ++ lib.optionals cfg.mysql [
                     "-/run/mysqld"
@@ -218,7 +227,7 @@
                       then "${cfg.dataDir}/photoprism.sqlite"
                       else "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
                     STORAGE_PATH = "${cfg.dataDir}/storage";
-                    ORIGINALS_PATH = "${cfg.dataDir}/originals";
+                    ORIGINALS_PATH = "${cfg.originalsDir}";
                     IMPORT_PATH = "${cfg.dataDir}/import";
                     SIDECAR_PATH = "${cfg.dataDir}/sidecar";
                   }

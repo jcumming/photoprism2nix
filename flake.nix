@@ -97,7 +97,7 @@
             };
 
             adminPassword = mkOption {
-              type = types.string;
+              type = types.str;
               default = "photoprism";
               description = ''
                 Password for admin account. Please use "keyfile" instead. This field will be visible to all users who have access to the store!

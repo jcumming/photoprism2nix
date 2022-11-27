@@ -47,14 +47,40 @@
               default = false;
             };
 
-            port = mkOption {
-              type = types.int;
-              default = 2342;
-            };
-
-            host = mkOption {
-              type = types.str;
-              default = "127.0.0.1";
+            settings = mkOption {
+              type = submodule {
+                freeformType = attrsOf optionType;
+              };
+              description = lib.mdDoc ''
+                [Environment variable](https://docs.photoprism.app/getting-started/config-options/) set before executing photoprism.
+                The resultant environment variable will have `PHOTOPRISM_` prepended. (i.e. WORKERS = 8 sets PHOTOPRISM_WORKERS = 8).
+              '';
+              default = {
+                DEBUG = true;
+                DETECT_NSFW = true;
+                EXPERIMENTAL = true;
+                HTTP_HOST = "127.0.0.1";
+                HTTP_MODE = "release";
+                HTTP_PORT = 2342;
+                JPEG_QUALITY = 92;
+                JPEG_SIZE = 7680;
+                ORIGINALS_LIMIT = 1000000;
+                PUBLIC = false;
+                READONLY = false;
+                SETTINGS_HIDDEN = false;
+                SIDECAR_JSON = true;
+                SIDECAR_PATH = "${cfg.dataDir}/sidecar";
+                SIDECAR_YAML = true;
+                SITE_CAPTION = "Browse Your Life";
+                SITE_TITLE = "PhotoPrism";
+                SITE_URL = "http://127.0.0.1:2342/";
+                THUMB_FILTER = "linear";
+                THUMB_SIZE = 2048;
+                THUMB_SIZE_UNCACHED = 7680;
+                THUMB_UNCACHED = true;
+                UPLOAD_NSFW = true;
+                WORKERS = 16;
+              };
             };
 
             keyFile = mkOption {
@@ -178,49 +204,25 @@
 
               environment = (
                 lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v))
-                {
-                  #HOME = "${cfg.dataDir}";
-                  SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
+                ({
+                    #HOME = "${cfg.dataDir}";
+                    SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
 
-                  DARKTABLE_PRESETS = "false";
+                    DARKTABLE_PRESETS = "false";
 
-                  DATABASE_DRIVER =
-                    if !cfg.mysql
-                    then "sqlite"
-                    else "mysql";
-                  DATABASE_DSN =
-                    if !cfg.mysql
-                    then "${cfg.dataDir}/photoprism.sqlite"
-                    else "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
-                  DEBUG = "true";
-                  DETECT_NSFW = "true";
-                  EXPERIMENTAL = "true";
-                  WORKERS = "16";
-                  ORIGINALS_LIMIT = "1000000";
-                  HTTP_HOST = "${cfg.host}";
-                  HTTP_PORT = "${toString cfg.port}";
-                  HTTP_MODE = "release";
-                  JPEG_QUALITY = "92";
-                  JPEG_SIZE = "7680";
-                  PUBLIC = "false";
-                  READONLY = "false";
-                  TENSORFLOW_OFF = "true";
-                  SIDECAR_JSON = "true";
-                  SIDECAR_YAML = "true";
-                  SIDECAR_PATH = "${cfg.dataDir}/sidecar";
-                  SETTINGS_HIDDEN = "false";
-                  SITE_CAPTION = "Browse Your Life";
-                  SITE_TITLE = "PhotoPrism";
-                  SITE_URL = "http://127.0.0.1:2342/";
-                  STORAGE_PATH = "${cfg.dataDir}/storage";
-                  ORIGINALS_PATH = "${cfg.dataDir}/originals";
-                  IMPORT_PATH = "${cfg.dataDir}/import";
-                  THUMB_FILTER = "linear";
-                  THUMB_SIZE = "2048";
-                  THUMB_SIZE_UNCACHED = "7680";
-                  THUMB_UNCACHED = "true";
-                  UPLOAD_NSFW = "true";
-                }
+                    DATABASE_DRIVER =
+                      if !cfg.mysql
+                      then "sqlite"
+                      else "mysql";
+                    DATABASE_DSN =
+                      if !cfg.mysql
+                      then "${cfg.dataDir}/photoprism.sqlite"
+                      else "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
+                    STORAGE_PATH = "${cfg.dataDir}/storage";
+                    ORIGINALS_PATH = "${cfg.dataDir}/originals";
+                    IMPORT_PATH = "${cfg.dataDir}/import";
+                  }
+                  // cfg.settings)
                 // (
                   if !cfg.keyFile
                   then {PHOTOPRISM_ADMIN_PASSWORD = "photoprism";}

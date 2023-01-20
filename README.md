@@ -1,4 +1,8 @@
 
+## Archived
+
+There is now a [mainline nixos module](https://github.com/NixOS/nixpkgs/blob/503c288f4e5ace67a6b0601a3fdec78da704fb31/nixos/modules/services/web-apps/photoprism.nix) for photoprism. Use that!
+
 ## NixOS module for Photoprism
 
 This module is a fork of [photoprism2nix](https://github.com/GTrunSec/photoprism2nix). 
